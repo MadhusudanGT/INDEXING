@@ -3,6 +3,7 @@ import {MatTableDataSource} from '@angular/material/table'
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort'
 import { MattableserviceService } from '../service/mattableservice.service';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-materials-table',
@@ -10,7 +11,7 @@ import { MattableserviceService } from '../service/mattableservice.service';
   styleUrls: ['./materials-table.component.css']
 })
 export class MaterialsTableComponent implements OnInit {
-  displayedColumns = ['id', 'name', 'progress', 'color'];
+  displayedColumns = ['select','id', 'name', 'progress', 'color'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -38,6 +39,23 @@ result:UserData[]=[];
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
   }
+
+  selection = new SelectionModel<UserData>(true, []);
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
 }
 
 
