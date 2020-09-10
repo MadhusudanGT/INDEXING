@@ -1,0 +1,60 @@
+<div *ngIf="currentMatdata" class="edit-form">
+    <h4>ANGULAR-MATERIAL-TABLE</h4>
+    <form>
+      <div class="form-group">
+        <label for="id">ID</label>
+        <input
+        type="text"
+          class="form-control"
+          id="id"
+          [(ngModel)]="currentMatdata.id"
+          name="id"
+        />
+      </div>
+      <div class="form-group">
+        <label for="name">NAME</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          [(ngModel)]="currentMatdata.name"
+          name="name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="progress">PROGRESS</label>
+        <input
+          type="text"
+          class="form-control"
+          id="progress"
+          [(ngModel)]="currentMatdata.progress"
+          name="progress"
+        />
+      </div>
+      <div class="form-group">
+        <label for="color">color</label>
+        <input
+          type="text"
+          class="form-control"
+          id="color"
+          [(ngModel)]="currentMatdata.color"
+          name="color"
+        />
+      </div>
+    </form>
+  
+  
+    <button class="badge badge-danger mr-2" (click)="deletedata()">
+      Delete
+    </button>
+  
+    <button type="submit" class="badge badge-success" (click)="updatedata()">
+      Update
+    </button>
+    <p>{{ message }}</p>
+  </div>
+  
+  <div *ngIf="!currentMatdata">
+    <br />
+    <p>Cannot access this data...</p>
+  </div>
