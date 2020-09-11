@@ -1,9 +1,10 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild , Output , EventEmitter} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table'
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort'
 import { MattableserviceService } from '../service/mattableservice.service';
 import {SelectionModel} from '@angular/cdk/collections';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-materials-table',
@@ -11,12 +12,13 @@ import {SelectionModel} from '@angular/cdk/collections';
   styleUrls: ['./materials-table.component.css']
 })
 export class MaterialsTableComponent implements OnInit {
-  displayedColumns = ['select','id', 'name', 'progress', 'color'];
+  displayedColumns = ['select','id', 'name', 'progress', 'color','update','action'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
-  constructor(private service:MattableserviceService) { }
+  constructor(private service:MattableserviceService,private route: ActivatedRoute,
+    private router: Router) { }
 result:UserData[]=[];
 
   ngOnInit(): void {
@@ -55,6 +57,31 @@ result:UserData[]=[];
         this.selection.clear() :
         this.dataSource.data.forEach(row => this.selection.select(row));
   }
+ data:UserData;
+  // delete the row
+  delete(element){
+    this.data=element
+this.service.delete(this.data.id)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.ngOnInit()
+          this.router.navigate(['/']);
+        },
+        error => {
+          console.log(error);
+        });
+}
+
+//update the data
+//@Output() SendValue=new EventEmitter<string>();
+@Output() SendValue: EventEmitter<any> = new EventEmitter<any>();
+
+update(element) {
+  this.SendValue.emit(element);
+  this.router.navigate(['/update-delete']);
+ 
+}
 
 }
 

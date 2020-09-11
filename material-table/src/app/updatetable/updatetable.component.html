@@ -43,9 +43,9 @@
       </div>
     </form>
   
-  
-    <button class="badge badge-danger mr-2" (click)="deletedata()">
-      Delete
+  <app-materials-table (SendValue)="onOpen($event)"></app-materials-table>
+    <button class="badge badge-danger mr-2" (click)="BACK()">
+      BACK
     </button>
   
     <button type="submit" class="badge badge-success" (click)="updatedata()">

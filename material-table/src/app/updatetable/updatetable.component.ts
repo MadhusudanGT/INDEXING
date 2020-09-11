@@ -8,20 +8,34 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./updatetable.component.css']
 })
 export class UpdatetableComponent implements OnInit {
-
-  currentMatdata = null;
+  datafromcomp:UserData;
+  currentMatdata:any;
   message = '';
+  id:UserData;
   constructor(private service:MattableserviceService,
     private route: ActivatedRoute,
     private router: Router) { }
-
   ngOnInit(): void {
     this.message = '';
-    this.getdata(this.route.snapshot.paramMap.get('id'));
+    this.service.getAll().subscribe((data:UserData[])=>
+      {
+      return data;
+      })
+      this.getdata()
+      this.onOpen(this.id)
   }
 
-  getdata(id) {
-    this.service.get(id)
+  onOpen(data){
+    if (typeof data == 'undefined') {
+      console.log("item is undefined!");
+    } else {
+      this.datafromcomp=data;
+    }
+   console.log(this.datafromcomp+"user component data")
+      }
+
+  getdata() {
+    this.service.get(this.id)
       .subscribe(
         data => {
           this.currentMatdata = data;
@@ -37,6 +51,7 @@ export class UpdatetableComponent implements OnInit {
       .subscribe(
         response => {
           console.log(response);
+        this.ngOnInit()
           this.message = 'The data was updated successfully!';
         },
         error => {
@@ -44,15 +59,15 @@ export class UpdatetableComponent implements OnInit {
         });
   }
 
-  deletedata() {
-    this.service.delete(this.currentMatdata.id)
-      .subscribe(
-        response => {
-          console.log(response);
-          this.router.navigate(['/']);
-        },
-        error => {
-          console.log(error);
-        });
-  }
+BACK(){
+  this.router.navigate(['/']);
+}
+}
+
+
+export interface UserData {
+  id: string;
+  name: string;
+  progress: string;
+  color: string;
 }
