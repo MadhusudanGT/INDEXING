@@ -59,7 +59,7 @@
 <!-- delete colume -->
       <ng-container cdkColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Delete</mat-header-cell>
-          <mat-cell *matCellDef="let element"><button mat-fab color="primary"  (click)="delete(element)" aria-label="Example icon button with a delete icon">
+          <mat-cell *matCellDef="let element"><button mat-fab color="primary" (click)="openDialog(element)" aria-label="Example icon button with a delete icon">
             <mat-icon>delete</mat-icon>
           </button></mat-cell>
     </ng-container>
@@ -67,7 +67,7 @@
 <!-- edit colum  -->
  <ng-container cdkColumnDef="update">
         <mat-header-cell *matHeaderCellDef> update </mat-header-cell>
-          <mat-cell *matCellDef="let element"><button mat-fab color="primary" (click)="update(element)" aria-label="Example icon button with a delete icon">
+          <mat-cell *matCellDef="let element"><button mat-fab color="primary" (click)="openDialog()" (click)="update(element)" aria-label="Example icon button with a delete icon">
             <mat-icon>edit</mat-icon>
           </button></mat-cell>
     </ng-container>

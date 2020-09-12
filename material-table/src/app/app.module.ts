@@ -52,12 +52,16 @@ import { FormsModule } from '@angular/forms';
 import { AddmattableComponent } from './addmattable/addmattable.component';
 import { UpdatetableComponent } from './updatetable/updatetable.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     MaterialsTableComponent,
     AddmattableComponent,
-    UpdatetableComponent
+    UpdatetableComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,

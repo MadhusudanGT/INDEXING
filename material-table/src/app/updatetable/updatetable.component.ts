@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MattableserviceService } from '../service/mattableservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-updatetable',
@@ -9,20 +10,23 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class UpdatetableComponent implements OnInit {
   datafromcomp:UserData;
-  currentMatdata:any;
+  currentMatdata:UserData;
   message = '';
+  strigfyeddata=''
   id:UserData;
   constructor(private service:MattableserviceService,
     private route: ActivatedRoute,
     private router: Router) { }
   ngOnInit(): void {
     this.message = '';
+    this.getdata();
+  }
+
+  getdata(){
     this.service.getAll().subscribe((data:UserData[])=>
-      {
+    {
       return data;
-      })
-      this.getdata()
-      this.onOpen(this.id)
+    }) 
   }
 
   onOpen(data){
@@ -30,33 +34,26 @@ export class UpdatetableComponent implements OnInit {
       console.log("item is undefined!");
     } else {
       this.datafromcomp=data;
+      this.strigfyeddata=JSON.stringify(this.datafromcomp)
+      this.currentMatdata=JSON.parse(this.strigfyeddata);
+      console.log(this.currentMatdata)
+      
     }
-   console.log(this.datafromcomp+"user component data")
       }
-
-  getdata() {
-    this.service.get(this.id)
-      .subscribe(
-        data => {
-          this.currentMatdata = data;
-          console.log(data);
-        },
-        error => {
-          console.log(error);
-        });
-  }
 
   updatedata() {
     this.service.update(this.currentMatdata.id, this.currentMatdata)
       .subscribe(
         response => {
           console.log(response);
-        this.ngOnInit()
+          
           this.message = 'The data was updated successfully!';
         },
         error => {
           console.log(error);
+          this.message = 'please check the code!';
         });
+         window.location.reload();
   }
 
 BACK(){

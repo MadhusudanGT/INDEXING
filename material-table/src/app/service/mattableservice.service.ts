@@ -22,6 +22,8 @@ export class MattableserviceService {
   }
 
   update(id, data) {
+    console.log(id)
+    console.log(data)
     return this.http.put(`${baseUrl}/${id}`, data);
   }
 

@@ -5,7 +5,9 @@ import {MatSort} from '@angular/material/sort'
 import { MattableserviceService } from '../service/mattableservice.service';
 import {SelectionModel} from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { element } from 'protractor';
 @Component({
   selector: 'app-materials-table',
   templateUrl: './materials-table.component.html',
@@ -18,9 +20,9 @@ export class MaterialsTableComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   constructor(private service:MattableserviceService,private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,public dialog: MatDialog) { }
 result:UserData[]=[];
-
+@Output() SendValue: EventEmitter<any> = new EventEmitter<any>();
   ngOnInit(): void {
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(this.result);
@@ -32,7 +34,7 @@ result:UserData[]=[];
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         // users.push(data as unknown as UserData)
-         console.log(this.result)
+        // console.log(this.result)
       })
   }
 
@@ -57,11 +59,45 @@ result:UserData[]=[];
         this.selection.clear() :
         this.dataSource.data.forEach(row => this.selection.select(row));
   }
+
  data:UserData;
   // delete the row
-  delete(element){
-    this.data=element
-this.service.delete(this.data.id)
+//   delete(element){
+//     this.data=element
+// this.service.delete(this.data.id)
+//       .subscribe(
+//         response => {
+//           console.log(response);
+//           this.ngOnInit()
+//           this.router.navigate(['/']);
+//         },
+//         error => {
+//           console.log(error);
+//         });
+// }
+
+//update the data
+//@Output() SendValue=new EventEmitter<string>();
+
+
+update(element) {
+  console.log(element.data)
+  this.SendValue.emit(element);
+  this.ngOnInit();
+  this.router.navigate(['/update-delete']);
+ this.ngOnInit();
+}
+
+openDialog(element): void {
+  const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    width: '350px',
+    data: "Do you confirm the deletion of this data?"
+  });
+  dialogRef.afterClosed().subscribe(result => {
+    if(result) {
+      console.log('Yes clicked');
+      this.data=element;
+        this.service.delete(this.data.id)
       .subscribe(
         response => {
           console.log(response);
@@ -71,20 +107,11 @@ this.service.delete(this.data.id)
         error => {
           console.log(error);
         });
+      }
+      // DO SOMETHING
+  });
 }
-
-//update the data
-//@Output() SendValue=new EventEmitter<string>();
-@Output() SendValue: EventEmitter<any> = new EventEmitter<any>();
-
-update(element) {
-  this.SendValue.emit(element);
-  this.router.navigate(['/update-delete']);
- 
 }
-
-}
-
 
 export interface UserData {
   id: string;

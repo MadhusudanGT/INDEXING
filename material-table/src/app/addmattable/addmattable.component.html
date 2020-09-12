@@ -51,6 +51,9 @@
   
     <div *ngIf="submitted">
       <h4>You submitted successfully!</h4>
-      <button class="btn btn-success" (click)="newone()">Add</button>
+      <button mat-fab color="primary" (click)="newone()" aria-label="Example icon button with a add icon">
+        <mat-icon>add</mat-icon></button>
+        <button mat-fab color="primary" routerLink="/" routerLinkActive="active" aria-label="Example icon button with a add icon">
+          back</button>
     </div>
   </div>
